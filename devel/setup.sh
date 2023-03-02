@@ -1,1 +1,1 @@
-/home/sparus/halimeda_detection/devel/.private/catkin_tools_prebuild/setup.sh
+/home/sparus/catkin_ws/src/halimeda_detection/devel/.private/catkin_tools_prebuild/setup.sh

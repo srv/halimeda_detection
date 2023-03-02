@@ -1,4 +1,4 @@
-prefix=/home/sparus/halimeda_detection/devel/.private/catkin_tools_prebuild
+prefix=/home/sparus/catkin_ws/src/halimeda_detection/devel/.private/catkin_tools_prebuild
 
 Name: catkin_tools_prebuild
 Description: Description of catkin_tools_prebuild

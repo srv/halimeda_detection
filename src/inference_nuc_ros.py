@@ -34,10 +34,15 @@ class Halimeda_detection:
 
 		self.period = 1 # rospy.get_param('mine_detec/period')
 
+		self.tinf_sum = 0
+		self.tss_sum = 0
+		self.tod_sum = 0
+		self.counter = 0
+
 		self.shape = 1024
 
-		self.model_path_ss = "../models"
-		self.model_path_od = "../models/od.pt"
+		self.model_path_ss = "../models/"
+		self.model_path_od = "../models/yolo_xl/od.pt"
 
 		# Params
 		self.init = False
@@ -107,7 +112,13 @@ class Halimeda_detection:
 		#image_np = imageio.imread("../halimeda_56.JPG")
 
 		self.image_np_rsz = self.resize_volume(image_np)
-
+		self.counter += 1
+		print("")
+		print("")
+		print("-----------------------")
+		print("-----------------------")
+		print("")
+		print("")
 		tinf1 = time.time()
 		self.inference_ss()
 		self.inference_od()
@@ -119,7 +130,15 @@ class Halimeda_detection:
 		# thread_od.join() # Don't exit while threads are running		
 		tinf2 = time.time()
 		tinf = tinf2-tinf1
+
+
+		self.tinf_sum  = (self.tinf_sum  + tinf)
+		tinf_mean = self.tinf_sum/self.counter
+
+		print()
 		print("inference took: " + str(tinf)  + "seconds")
+		print("Mean inference took: " + str(tinf_mean)  + " seconds after infering " + str(self.counter) + " images")
+		
 
 		image_merged_np = self.merge()
 
@@ -138,7 +157,10 @@ class Halimeda_detection:
 		#rospy.loginfo('[%s]: SS inference done', self.name)	
 		tss2 = time.time()
 		tss =tss2-tss1
-		print("ss took: " + str(tss)  + "seconds")
+		self.tss_sum  = (self.tss_sum  + tss)
+		tss_mean = self.tss_sum/self.counter
+		print("ss took: " + str(tss)  + " seconds")
+		print("mean ss took: " + str(tss_mean)  + " seconds after infering " + str(self.counter) + " images")
 
 	
 	
@@ -162,7 +184,10 @@ class Halimeda_detection:
 		#rospy.loginfo('[%s]: OD inference done', self.name)	
 		tod2 = time.time()
 		tod =tod2-tod1
-		print("od took: " + str(tod)  + "seconds")
+		self.tod_sum  = (self.tod_sum  + tod)
+		tod_mean = self.tod_sum/self.counter
+		print("od took: " + str(tod)  + " seconds")
+		print("mean od took: " + str(tod_mean)  + " seconds after infering " + str(self.counter) + " images")
 
 
 	def merge(self):

@@ -1,6 +1,6 @@
 # CMake generated Testfile for 
-# Source directory: /home/sparus/halimeda_detection/build/catkin_tools_prebuild
-# Build directory: /home/sparus/halimeda_detection/build/catkin_tools_prebuild
+# Source directory: /home/sparus/catkin_ws/src/halimeda_detection/build/catkin_tools_prebuild
+# Build directory: /home/sparus/catkin_ws/src/halimeda_detection/build/catkin_tools_prebuild
 # 
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.

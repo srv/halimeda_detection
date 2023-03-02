@@ -1,2 +1,2 @@
 - setup-file:
-    local-name: /home/sparus/halimeda_detection/install/setup.sh
+    local-name: /home/sparus/catkin_ws/src/halimeda_detection/install/setup.sh
