@@ -1,0 +1,33 @@
+
+
+-- XL -- 
+mean ss took: 1.118592619895935 seconds after infering 20 images
+mean od took: 1.630102014541626 seconds after infering 20 images
+Mean inference took: 2.7488643646240236 seconds after infering 20 images
+
+
+-- L -- 
+mean ss took: 1.1224608421325684 seconds after infering 20 images
+mean od took: 0.9330893158912659 seconds after infering 20 images
+Mean inference took: 2.0557310342788697 seconds after infering 20 images
+
+
+-- M -- 
+mean ss took: 1.1447364211082458 seconds after infering 20 images
+mean od took: 0.451183819770813 seconds after infering 20 images
+Mean inference took: 1.5960899710655212 seconds after infering 20 images
+
+
+-- S -- 
+mean ss took: 1.143876814842224 seconds after infering 20 images
+mean od took: 0.1998502254486084 seconds after infering 20 images
+Mean inference took: 1.3438993692398071 seconds after infering 20 images
+
+
+-- N -- 
+mean ss took: 1.1422163009643556 seconds after infering 20 images
+mean od took: 0.08828097581863403 seconds after infering 20 images
+Mean inference took: 1.230676245689392 seconds after infering 20 images
+
+
+
