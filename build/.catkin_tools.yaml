@@ -1,0 +1,6 @@
+devel_space: /home/sparus/halimeda_detection/devel
+install: false
+install_space: /home/sparus/halimeda_detection/install
+profile: default
+source_space: /home/sparus/halimeda_detection/src
+workspace: /home/sparus/halimeda_detection
