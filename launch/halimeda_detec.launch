@@ -1,0 +1,10 @@
+<launch>
+	<!-- Params -->
+
+	<!-- detect image -->
+	<node name="halimeda_detec" pkg="halimeda_detection" type="inference_nuc_ros.py" output="screen">
+		<!-- <rosparam file="$(find halimeda_detection)/config/model.yaml"/> -->
+	</node>
+</launch>
+
+
