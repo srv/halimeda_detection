@@ -42,12 +42,12 @@ class Halimeda_detection:
 		self.shape = 1024
 
 		self.model_path_ss = "../models/"
-		self.model_path_od = "../models/yolo_xl/od.pt"
+		self.model_path_od = "../models/yolo_n/od.pt"
 
 		# Params
 		self.init = False
 		self.new_image = False
-	
+
 		# Set subscribers
 		image_sub = message_filters.Subscriber('/stereo_down/left/image_rect_color', Image)
 		info_sub = message_filters.Subscriber('/stereo_down/left/camera_info', CameraInfo)
@@ -78,7 +78,7 @@ class Halimeda_detection:
 
 
 	def run(self,_):
-		
+
 		# New image available
 		if not self.new_image:
 			return
@@ -93,23 +93,22 @@ class Halimeda_detection:
 			info.height = self.shape
 
 			self.pub_img_merged.header = header
-			
+
 		except:
 			rospy.logwarn('[%s]: There is no input image to run the inference', self.name)
 			return
 
 		# Set model
-		if not self.init: 
+		if not self.init:
 			self.set_models()
 			self.init = True
 			print("Model init")
-			
-		rospy.loginfo('[%s]: Starting inferences', self.name)	
+
+		rospy.loginfo('[%s]: Starting inferences', self.name)
 
 		# Object detection
 		image_np = np.array(np.frombuffer(image.data, dtype=np.uint8).reshape(1440, 1920,3))
 
-		#image_np = imageio.imread("../halimeda_56.JPG")
 
 		self.image_np_rsz = self.resize_volume(image_np)
 		self.counter += 1
@@ -127,7 +126,7 @@ class Halimeda_detection:
 		# thread_ss.start()
 		# thread_od.start()
 		# thread_ss.join() # Don't exit while threads are running
-		# thread_od.join() # Don't exit while threads are running		
+		# thread_od.join() # Don't exit while threads are running
 		tinf2 = time.time()
 		tinf = tinf2-tinf1
 
@@ -138,7 +137,7 @@ class Halimeda_detection:
 		print()
 		print("inference took: " + str(tinf)  + "seconds")
 		print("Mean inference took: " + str(tinf_mean)  + " seconds after infering " + str(self.counter) + " images")
-		
+
 
 		image_merged_np = self.merge()
 
@@ -147,14 +146,14 @@ class Halimeda_detection:
 		imageio.imwrite(os.path.join("../out", name + "_ss.png"), self.image_np_ss)
 		imageio.imwrite(os.path.join("../out", name + "_od.png"), self.image_np_od)
 
-		
+
 	def inference_ss(self):
 		tss1 = time.time()
 		X_test = np.zeros((1, self.shape, self.shape, 3), dtype=np.uint8)
 		X_test[0] = self.image_np_rsz
 		preds_test = self.model_ss.predict(X_test)
 		self.image_np_ss = np.squeeze(preds_test[0])*255
-		#rospy.loginfo('[%s]: SS inference done', self.name)	
+		#rospy.loginfo('[%s]: SS inference done', self.name)
 		tss2 = time.time()
 		tss =tss2-tss1
 		self.tss_sum  = (self.tss_sum  + tss)
@@ -162,12 +161,12 @@ class Halimeda_detection:
 		print("ss took: " + str(tss)  + " seconds")
 		print("mean ss took: " + str(tss_mean)  + " seconds after infering " + str(self.counter) + " images")
 
-	
-	
+
+
 	def inference_od(self):
 		tod1 = time.time()
 		dets_od = self.model_od([self.image_np_rsz])
-		self.image_np_od = np.zeros([self.shape, self.shape], dtype=np.uint8) 
+		self.image_np_od = np.zeros([self.shape, self.shape], dtype=np.uint8)
 		dets_pandas = dets_od.pandas().xyxy[0]
 
 		for index, row in dets_pandas.iterrows():
@@ -177,11 +176,11 @@ class Halimeda_detection:
 			xmax=int(row['xmax'])
 			ymax=int(row['ymax'])
 
-			for j in range(ymin, ymax):	
-				for k in range(xmin, xmax):	
+			for j in range(ymin, ymax):
+				for k in range(xmin, xmax):
 					self.image_np_od[j, k] = int(255*conf)
 
-		#rospy.loginfo('[%s]: OD inference done', self.name)	
+		#rospy.loginfo('[%s]: OD inference done', self.name)
 		tod2 = time.time()
 		tod =tod2-tod1
 		self.tod_sum  = (self.tod_sum  + tod)
@@ -199,7 +198,7 @@ class Halimeda_detection:
 
 
 	def resize_volume(self, img):
-		
+
 		desired_width = 1024
 		desired_height = 1024
 		desired_depth = 3
@@ -211,11 +210,11 @@ class Halimeda_detection:
 		width = current_width / desired_width
 		height = current_height / desired_height
 		depth = current_depth / desired_depth
-		
+
 		width_factor = 1 / width
 		height_factor = 1 / height
 		depth_factor = 1 / depth
-		
+
 		img = scipy.ndimage.zoom(img, (width_factor, height_factor, depth_factor), order=1)
 		return img
 
